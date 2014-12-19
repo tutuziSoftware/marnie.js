@@ -21,12 +21,12 @@
         }
 
         if(first < last){
-            this._FIRST = first;
-            this._LAST = last;
+            this.FIRST = first;
+            this.LAST = last;
         }else{
             var swap = first;
-            this._FIRST = last;
-            this._LAST = swap;
+            this.FIRST = last;
+            this.LAST = swap;
         }
 
         Object.freeze(this);
@@ -35,8 +35,8 @@
     };
 
     //デフォルト値
-    marnie.Range.prototype._FIRST = 0;
-    marnie.Range.prototype._LAST = 0;
+    marnie.Range.prototype.FIRST = 0;
+    marnie.Range.prototype.LAST = 0;
 
     /**
      * 範囲内の値を返します。
@@ -45,7 +45,7 @@
     marnie.Range.prototype.forEach = function(callback){
         var index = 0;
 
-        for(var count = this._FIRST ; count <= this._LAST ; count++, index++){
+        for(var count = this.FIRST ; count <= this.LAST ; count++, index++){
             callback(count, index);
         }
     };
@@ -56,7 +56,7 @@
      * @returns {boolean}
      */
     marnie.Range.prototype.on = function(check){
-        return this._FIRST <= check && check <= this._LAST;
+        return this.FIRST <= check && check <= this.LAST;
     }
 
     /**
@@ -65,7 +65,7 @@
      * @returns {boolean}
      */
     marnie.Range.prototype.out = function(check){
-        return check < this._FIRST || this._LAST < check;
+        return check < this.FIRST || this.LAST < check;
     }
 
     /**
@@ -81,8 +81,8 @@
         //また、on()out()が分かれている為、onだけ実行したいという場合にも一応対応出来る。
         return {
             _CHECK:check,
-            _FIRST:this._FIRST,
-            _LAST:this._LAST,
+            FIRST:this.FIRST,
+            LAST:this.LAST,
             on:function(callback){
                 check = null;
                 if(marnie.Range.prototype.on.call(this, this._CHECK)){
