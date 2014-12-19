@@ -16,6 +16,10 @@
      * @constructor
      */
     marnie.Range = function(first, last, forEachCallback){
+        if(typeof first !== 'number' || typeof last !== 'number'){
+            console.log('数値を指定してください');
+            return;
+        }
         if(this.constructor != marnie.Range){
             return new marnie.Range(first, last, forEachCallback);
         }
@@ -43,6 +47,11 @@
      * @param callback
      */
     marnie.Range.prototype.forEach = function(callback){
+        if(typeof callback !== 'function'){
+            console.log('関数を指定してください');
+            return;
+        }
+
         var index = 0;
 
         for(var count = this.FIRST ; count <= this.LAST ; count++, index++){
