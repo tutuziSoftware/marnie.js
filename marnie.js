@@ -188,6 +188,13 @@
         };
     },
     function(marnie){
+        /**
+         * 指定行数以上の関数を指定した場合、処理を行わないようにします。
+         * 処理を行わない場合、このクラスはログにその旨を出力します。
+         * @param f
+         * @returns {Taboo}
+         * @constructor
+         */
         marnie.Taboo = function(f){
             if(typeof f !== 'function'){
                 console.log('関数を指定してください');
