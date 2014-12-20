@@ -186,5 +186,31 @@
                 }
             };
         };
+    },
+    function(marnie){
+        marnie.Taboo = function(f){
+            if(typeof f !== 'function'){
+                console.log('関数を指定してください');
+                return;
+            }
+            if(this.constructor !== marnie.Taboo){
+                return new marnie.Taboo(f);
+            }
+
+            if(this.isExecute(f)){
+                f();
+            }else{
+                console.log('関数が' + this.LINE + '行を超えています。処理の分割を検討してください');
+            }
+        };
+
+        marnie.Taboo.prototype.LINE = 100;
+
+        marnie.Taboo.prototype.isExecute = function(f){
+            var code = f.toString();
+            var line = code.split('\n').length;
+
+            return line <= this.LINE;
+        };
     }
 ]);
