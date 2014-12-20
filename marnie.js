@@ -1,11 +1,4 @@
-(function(window){
-    if('marnie' in window){
-        var marnie = window['marnie'];
-    }else{
-        var marnie = {};
-        window['marnie'] = marnie;
-    }
-
+(function(marnie){
     /**
      * とある範囲を指定します。
      * このクラスはイミュータブルです。
@@ -108,4 +101,14 @@
             }
         };
     };
-})(window);
+})((function(){
+    //init
+    if('marnie' in this){
+        var marnie = this['marnie'];
+    }else{
+        var marnie = {};
+        this['marnie'] = marnie;
+    }
+
+    return marnie;
+})());
