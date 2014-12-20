@@ -121,12 +121,12 @@
         /**
          * Modelを表現します。
          * @param firstData
-         * @returns {Model} このオブジェクトはイミュータブルです。
+         * @returns {MegaStructure} このオブジェクトはイミュータブルです。
          * @constructor
          */
-        marnie.Model = function(firstData){
-            if(this.constructor !== marnie.Model){
-                return new marnie.Model(firstData);
+        marnie.MegaStructure = function(firstData){
+            if(this.constructor !== marnie.MegaStructure){
+                return new marnie.MegaStructure(firstData);
             }
 
             var lastData;
@@ -143,7 +143,7 @@
 
             Object.freeze(this);
         };
-        marnie.Model.prototype._mahyado = function(object){
+        marnie.MegaStructure.prototype._mahyado = function(object){
             if(typeof object === 'object' && Object.isFrozen(object) === false){
                 Object.freeze(object);
                 Object.keys(object).forEach(function(key){
@@ -165,7 +165,7 @@
          *                             nextが呼ばれると、前のオブジェクトをプロトタイプに入れた新しい空のオブジェクトを生成し、layerに設定します。
          * @returns {{nextLayer: Function}} このメソッドは状態を持つオブジェクトを生成します。
          */
-        marnie.Model.prototype.nextLayer = function(callback){
+        marnie.MegaStructure.prototype.nextLayer = function(callback){
             var self = this;
             var Layer = function(){};
             var layer = new Layer;

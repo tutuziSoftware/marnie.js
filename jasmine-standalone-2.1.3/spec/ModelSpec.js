@@ -1,6 +1,6 @@
-describe('Model', function(){
+describe('MegaStructure', function(){
     it('関数からの生成', function(){
-        var model = marnie.Model(0);
+        var model = marnie.MegaStructure(0);
         expect(model.data).toBe(0);
 
         model.data = 10;
@@ -8,7 +8,7 @@ describe('Model', function(){
     });
 
     it('コンストラクタからの生成', function(){
-        var model = new marnie.Model("qwerty");
+        var model = new marnie.MegaStructure("qwerty");
         expect(model.data).toBe("qwerty");
 
         model.data = "azerty";
@@ -16,14 +16,14 @@ describe('Model', function(){
     });
 
     it('起動時に関数を指定', function(){
-        var model = new marnie.Model(function(){
+        var model = new marnie.MegaStructure(function(){
             return "create";
         });
         expect(model.data).toBe("create");
     });
 
     it('起動時にオブジェクトを指定', function(){
-        var model = new marnie.Model({
+        var model = new marnie.MegaStructure({
             hoge:{
                 hufa:{}
             }
@@ -41,7 +41,7 @@ describe('Model', function(){
 
     describe('nextLayer()', function(){
         it('ごろごろごろごろ', function(){
-            var model = marnie.Model(0);
+            var model = marnie.MegaStructure(0);
 
             model.nextLayer(function(data, layer){
                 expect(data).toBe(0);
