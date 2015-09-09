@@ -118,73 +118,54 @@
         };
     },
     function(marnie){
-        /**
-         * Modelを表現します。
-         * @param firstData
-         * @returns {MegaStructure} このオブジェクトはイミュータブルです。
-         * @constructor
-         */
-        marnie.MegaStructure = function(firstData){
-            if(this.constructor !== marnie.MegaStructure){
-                return new marnie.MegaStructure(firstData);
-            }
+        marnie.SeaLavender = function(){
+            var sea = function(){};
+            sea._events = {};
+            sea._listeners = [];
 
-            var lastData;
-            if(typeof firstData === 'function'){
-                lastData = firstData();
-            }else if(typeof firstData === 'object'){
-                lastData = firstData;
-                this._mahyado(lastData);
-            }else{
-                lastData = firstData;
-            }
-
-            this.data = lastData;
-
-            Object.freeze(this);
-        };
-        marnie.MegaStructure.prototype._mahyado = function(object){
-            if(typeof object === 'object' && Object.isFrozen(object) === false){
-                Object.freeze(object);
-                Object.keys(object).forEach(function(key){
-                    this._mahyado(object[key]);
-                }, this);
-            }
-        };
-        /**
-         * データに対して必要な処理を行います。
-         *
-         * nextLayer()の目的は、データと処理を分離する事です。
-         * ここで言う処理はMVCにおけるどの層にも当てはまります。
-         * nextLayer()のコールバックはビジネスロジックかもしれないし、Viewかもしれないし、Controllerかもしれません。
-         * どのような動作をすべきかはユーザが決定すべき事柄です。
-         *
-         * @param callback(data, layer)
-         *              data (*):      this.dataです
-         *              layer(object): プロトタイプチェーンされたオブジェクトを返します。
-         *                             nextが呼ばれると、前のオブジェクトをプロトタイプに入れた新しい空のオブジェクトを生成し、layerに設定します。
-         * @returns {{nextLayer: Function}} このメソッドは状態を持つオブジェクトを生成します。
-         */
-        marnie.MegaStructure.prototype.nextLayer = function(callback){
-            var self = this;
-            var Layer = function(){};
-            var layer = new Layer;
-
-            callback(this.data, layer);
-            //freezeするとプロトタイプチェーンのいっこ上のプロパティが更新出来なくなる。
-            //Object.freeze(layer);
-
-            return {
-                nextLayer:function(callback){
-                    Layer.prototype = layer;
-                    layer = new Layer;
-
-                    callback(self.data, layer);
-                    //Object.freeze(layer);
-
-                    return this;
+            sea.addEvent = function(eventName, event){
+                if(eventName in sea._events){
+                    sea._events[eventName].push(event);
+                }else{
+                    sea._events[eventName] = [];
+                    sea._events[eventName].push(event);
                 }
             };
+
+            sea.addEventListener = function(eventName, listener){
+                sea._listeners.push({
+                    listener:listener
+                });
+            };
+
+            /**
+             * イベントを順次実行します。
+             */
+            sea.start = function(){
+                var appContext = Object.create(null);
+                var seaContext = Object.create(null);
+                _start(appContext, 0, seaContext);
+            };
+
+            function _start(context, index, seaContext){
+                for(var i = index ; i < sea._listeners.length; i++){
+                    var listener = sea._listeners[i];
+
+                    if(listener.listener.length <= 1){
+                        listener.listener(context);
+                    }else if(listener.listener.length == 2){
+                        listener.listener(context, done);
+                        index = i + 1;
+                        break;
+                    }
+                };
+
+                function done(){
+                    _start(context, index);
+                }
+            }
+
+            return sea;
         };
     },
     function(marnie){
@@ -218,6 +199,16 @@
             var line = code.split('\n').length;
 
             return line <= this.LINE;
+        };
+    },
+    function(marnie){
+        marnie.Compiler = function(){};
+        marnie.Compiler.prototype.execute = function(code){
+            var result = code.match(/"([^"]*)"/);
+            if(result) return result[1];
+
+            result = code.match(/([0-9]*)/);
+            if(result) return +result[1];
         };
     }
 ]);
