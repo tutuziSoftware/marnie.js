@@ -123,10 +123,13 @@
             sea._events = {};
             sea._listeners = [];
 
+            var _UNLIMITED = {};
+
             sea.addEvent = function(eventName, _event){
                 var event = {};
-                event.threshold = "threshold" in _event ? _event.threshold : -1;
+                event.threshold = "threshold" in _event ? _event.threshold : _UNLIMITED;
                 event.execute = "execute" in _event ? _event.execute : function(){};
+                event.seaExecuteCountDown = event.threshold;
 
                 if(eventName in sea._events){
                     sea._events[eventName].push(event);
@@ -138,6 +141,7 @@
 
             sea.addEventListener = function(eventName, listener){
                 sea._listeners.push({
+                    eventName:eventName,
                     listener:listener
                 });
             };
@@ -162,12 +166,15 @@
                 for(var i = index ; i < sea._listeners.length; i++){
                     var listener = sea._listeners[i];
 
-                    if(listener.listener.length <= 1){
-                        listener.listener(context);
-                    }else if(listener.listener.length == 2){
-                        listener.listener(context, done);
-                        index = i + 1;
-                        break;
+                    //おかしいですよカテジナさん！
+                    if(sea._events[listener.eventName][0].threshold == _UNLIMITED){
+                        if(listener.listener.length <= 1){
+                            listener.listener(context);
+                        }else if(listener.listener.length == 2){
+                            listener.listener(context, done);
+                            index = i + 1;
+                            break;
+                        }
                     }
                 };
 
