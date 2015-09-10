@@ -74,8 +74,7 @@ describe('SeaLavender', function(){
         sea.addEvent("end", {
             execute:function(context, listener){
                 if(listener(context)){
-                    this.stop();
-                    expect(true).toBeTruthy();
+                    expect(context.count).toBe(3);
                     done();
                 }else{
                     this.restart();

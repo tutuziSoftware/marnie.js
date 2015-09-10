@@ -122,6 +122,7 @@
             var sea = function(){};
             sea._events = {};
             sea._listeners = [];
+            var seaContext = Object.create(null);
 
             var _UNLIMITED = {};
 
@@ -147,8 +148,14 @@
              * イベントを順次実行します。
              */
             sea.start = function(){
-                var appContext = Object.create(null);
-                _start(appContext, 0);
+                _start(seaContext, 0);
+            };
+
+            /**
+             * イベントを再度実行します。
+             */
+            sea.restart = function(){
+                _start(seaContext, 0);
             };
 
             /**
@@ -166,9 +173,9 @@
 
                     if(event.threshold == _UNLIMITED){
                         if(listener.listener.length <= 1){
-                            event.execute(context, listener.listener);
+                            event.execute.call(sea, context, listener.listener);
                         }else if(listener.listener.length == 2){
-                            event.execute(context, listener.listener, done);
+                            event.execute.call(sea, context, listener.listener, done);
                             index = i + 1;
                             break;
                         }
@@ -176,9 +183,9 @@
                         sea._events[listener.eventName].seaExecuteCountDown--;
 
                         if(listener.listener.length <= 1){
-                            event.execute(context, listener.listener);
+                            event.execute.call(sea, context, listener.listener);
                         }else if(listener.listener.length == 2){
-                            event.execute(context, listener.listener, done);
+                            event.execute.call(sea, context, listener.listener, done);
                             index = i + 1;
                             break;
                         }
