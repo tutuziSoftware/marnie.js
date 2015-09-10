@@ -131,11 +131,8 @@
                 event.execute = "execute" in _event ? _event.execute : function(){};
                 event.seaExecuteCountDown = event.threshold;
 
-                if(eventName in sea._events){
-                    sea._events[eventName].push(event);
-                }else{
-                    sea._events[eventName] = [];
-                    sea._events[eventName].push(event);
+                if(eventName in sea._events == false){
+                    sea._events[eventName] = event;
                 }
             };
 
@@ -167,7 +164,7 @@
                     var listener = sea._listeners[i];
 
                     //おかしいですよカテジナさん！
-                    if(sea._events[listener.eventName][0].threshold == _UNLIMITED){
+                    if(sea._events[listener.eventName].threshold == _UNLIMITED){
                         if(listener.listener.length <= 1){
                             listener.listener(context);
                         }else if(listener.listener.length == 2){
