@@ -162,13 +162,23 @@
             function _start(context, index){
                 for(var i = index ; i < sea._listeners.length; i++){
                     var listener = sea._listeners[i];
+                    var event = sea._events[listener.eventName];
 
-                    //おかしいですよカテジナさん！
-                    if(sea._events[listener.eventName].threshold == _UNLIMITED){
+                    if(event.threshold == _UNLIMITED){
                         if(listener.listener.length <= 1){
-                            listener.listener(context);
+                            event.execute(context, listener.listener);
                         }else if(listener.listener.length == 2){
-                            listener.listener(context, done);
+                            event.execute(context, listener.listener, done);
+                            index = i + 1;
+                            break;
+                        }
+                    }else if(sea._events[listener.eventName].seaExecuteCountDown){
+                        sea._events[listener.eventName].seaExecuteCountDown--;
+
+                        if(listener.listener.length <= 1){
+                            event.execute(context, listener.listener);
+                        }else if(listener.listener.length == 2){
+                            event.execute(context, listener.listener, done);
                             index = i + 1;
                             break;
                         }

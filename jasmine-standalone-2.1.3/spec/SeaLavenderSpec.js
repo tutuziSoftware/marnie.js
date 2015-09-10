@@ -36,8 +36,8 @@ describe('SeaLavender', function(){
 
     it('非同期処理が入り込む場合(addEventListener編)', function(specDone){
         sea.addEvent("test", {
-            execute:function(context, listener){
-                listener(context);
+            execute:function(context, listener, done){
+                listener(context, done);
             }
         });
 
@@ -57,7 +57,7 @@ describe('SeaLavender', function(){
         sea.start();
     });
 
-    it('カウントアップの実装例', function(){
+    it('カウントアップの実装例', function(done){
         sea.addEvent("init", {
             threshold:1,
             execute:function(context, listener){
@@ -76,6 +76,7 @@ describe('SeaLavender', function(){
                 if(listener(context)){
                     this.stop();
                     expect(true).toBeTruthy();
+                    done();
                 }else{
                     this.restart();
                 }
@@ -98,7 +99,7 @@ describe('SeaLavender', function(){
         });
 
         sea.addEventListener("end", function(context){
-            return context.count != 3;
+            return context.count >= 3;
         });
 
         sea.start();
