@@ -82,8 +82,15 @@ describe('SeaLavender', function(){
             }
         });
 
+        var initCount = 0;
+
         sea.addEventListener("init", function(context){
             context.count = 0;
+
+            initCount++;
+
+            //一回しか実行されない
+            expect(initCount).toBe(1);
         });
 
         sea.addEventListener("countUp", function(context){

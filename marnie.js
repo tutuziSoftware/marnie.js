@@ -123,7 +123,11 @@
             sea._events = {};
             sea._listeners = [];
 
-            sea.addEvent = function(eventName, event){
+            sea.addEvent = function(eventName, _event){
+                var event = {};
+                event.threshold = "threshold" in _event ? _event.threshold : -1;
+                event.execute = "execute" in _event ? _event.execute : function(){};
+
                 if(eventName in sea._events){
                     sea._events[eventName].push(event);
                 }else{
@@ -143,11 +147,18 @@
              */
             sea.start = function(){
                 var appContext = Object.create(null);
-                var seaContext = Object.create(null);
-                _start(appContext, 0, seaContext);
+                _start(appContext, 0);
             };
 
-            function _start(context, index, seaContext){
+            /**
+             * イベントキューの指定された番号からイベントを開始します。
+             * @param context   アプリケーションコンテキスト。
+             *                  SeaLavenderユーザが自由に使えるObjectです。
+             *                  システムは、このObjectに対して操作を行う事を禁止します。
+             * @param index イベントキューの番号
+             * @private
+             */
+            function _start(context, index){
                 for(var i = index ; i < sea._listeners.length; i++){
                     var listener = sea._listeners[i];
 
