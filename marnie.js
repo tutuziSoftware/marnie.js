@@ -138,6 +138,11 @@
             };
 
             sea.addEventListener = function(eventName, listener){
+                if(eventName in sea._events == false){
+                    console.log('error: not event');
+                    return;
+                }
+
                 sea._listeners.push({
                     eventName:eventName,
                     listener:listener

@@ -104,5 +104,12 @@ describe('SeaLavender', function(){
         sea.start();
     });
 
-    it('addEvent定義前にaddEventListenerが作られたら？　何もしない');
+    it('addEvent定義前にaddEventListenerが作られたら？　何もしない', function(){
+        sea.addEventListener("test", function(){
+            expect(false).toBeTruthy();
+        });
+
+        sea.start();
+        expect(true).toBeTruthy();
+    });
 });
