@@ -252,6 +252,12 @@
         marnie.Hypoleucos = function(data){
             //memo dataは順次変更されるので、シャローコピーは行わない
 
+            Object.observe(data, function(changes){
+                changes.forEach(function(change){
+                    hypo.reload();
+                });
+            });
+
             var hypo = {};
 
             hypo.reload = function(){
