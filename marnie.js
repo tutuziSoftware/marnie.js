@@ -247,5 +247,11 @@
             result = code.match(/([0-9]*)/);
             if(result) return +result[1];
         };
+    },
+    function(marnie){
+        marnie.Hypoleucos = function(data){
+            //memo dataは順次変更されるので、シャローコピーは行わない
+            
+        };
     }
 ]);
