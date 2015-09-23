@@ -1,8 +1,8 @@
 describe('Viewみたいなやつ', function(){
-    it('とりあえずデータを表示できるように', function(){
-        var data = {};
-        var view = marnie.Hypoleucos(data);
+    var data = {};
+    var view = marnie.Hypoleucos(data);
 
+    it('とりあえずデータを表示できるように', function(){
         expect(document.getElementById('view-test').innerText).toBe('');
 
         data['view-test'] = 'aaa';
@@ -11,4 +11,6 @@ describe('Viewみたいなやつ', function(){
 
         expect(document.getElementById('view-test').innerText).toBe('aaa');
     });
+
+    it('reloadなくても値を変更したいよね！');
 });
