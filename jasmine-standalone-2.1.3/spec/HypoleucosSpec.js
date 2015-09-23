@@ -12,5 +12,9 @@ describe('Viewみたいなやつ', function(){
         expect(document.getElementById('view-test').innerText).toBe('aaa');
     });
 
-    it('reloadなくても値を変更したいよね！');
+    it('reloadなくても値を変更したいよね！', function(){
+        data['view-test'] = 'bbb';
+
+        expect(document.getElementById('view-test').innerText).toBe('bbb');
+    });
 });
