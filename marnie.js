@@ -251,7 +251,16 @@
     function(marnie){
         marnie.Hypoleucos = function(data){
             //memo dataは順次変更されるので、シャローコピーは行わない
-            
+
+            var hypo = {};
+
+            hypo.reload = function(){
+                Object.keys(data).forEach(function(key){
+                    document.getElementById(key).innerText = data[key];
+                });
+            };
+
+            return hypo;
         };
     }
 ]);
