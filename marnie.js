@@ -267,22 +267,36 @@
             };
 
             var _reload = function(data, key){
-                var methodNames = ['getElementById', 'getElementsByClassName'];
+                var methodNames = [
+                    //getElementById
+                    {
+                        element:document.getElementById(key),
+                        is:function(){
+                            return this.element && 'innerText' in this.element;
+                        },
+                        reload:function(){
+                            this.element.innerText = data[key];
+                        }
+                    },
+                    //getElementsByClassName
+                    {
+                        element:document.getElementsByClassName(key),
+                        is:function(){
+                            return this.element && 'length' in this.element;
+                        },
+                        reload:function(){
+                            for(var i = 0 ; i != this.element.length ; i++){
+                                this.element[i].innerText = data[key];
+                            }
+                        }
+                    }
+                ];
 
                 for(var i = 0 ; i != methodNames.length ; i++){
                     var methodName = methodNames[i];
-                    var element = document[methodName](key);
 
-                    if(element && 'innerText' in element){
-                        //getElementById
-                        element.innerText = data[key];
-                        break;
-                    }else if(element && 'length' in element){
-                        //getElementsByClassName
-                        for(var i = 0 ; i != element.length ; i++){
-                            element[i].innerText = data[key];
-                        }
-
+                    if(methodName.is()){
+                        methodName.reload();
                         break;
                     }
                 }
