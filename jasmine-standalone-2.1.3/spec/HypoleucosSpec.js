@@ -29,10 +29,13 @@ describe('Viewみたいなやつ', function(){
         data['view-test-class'] = 'ccc';
 
         setTimeout(function(){
-            expect(document.getElementsByClassName('view-test-class')[0].innerText).toBe('ccc');
+            var views = document.getElementsByClassName('view-test-class');
+
+            for(var i = 0 ; i != views.length ; i++){
+                expect(views[i].innerText).toBe('ccc');
+            }
+
             done();
         }, 0);
     });
-
-    it('クラス名が複数ある場合の変更');
 });
