@@ -267,7 +267,21 @@
             };
 
             var _reload = function(data, key){
-                document.getElementById(key).innerText = data[key];
+                var methodNames = ['getElementById', 'getElementsByClassName'];
+
+                for(var i = 0 ; i != methodNames.length ; i++){
+                    var methodName = methodNames[i];
+                    var element = document[methodName](key);
+
+                    if(element && 'innerText' in element){
+                        element.innerText = data[key];
+                        break;
+                    }else if(element){
+                        //手抜きだ
+                        element[0].innerText = data[key];
+                        break;
+                    }
+                }
             };
 
             return hypo;

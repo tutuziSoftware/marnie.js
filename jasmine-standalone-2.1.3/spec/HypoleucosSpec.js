@@ -22,4 +22,17 @@ describe('Viewみたいなやつ', function(){
             }
         }, 0);
     });
+
+    it('クラス名から値を変更したいよね！', function(done){
+        expect(document.getElementsByClassName('view-test-class')[0].innerText).toBe('');
+
+        data['view-test-class'] = 'ccc';
+
+        setTimeout(function(){
+            expect(document.getElementsByClassName('view-test-class')[0].innerText).toBe('ccc');
+            done();
+        }, 0);
+    });
+
+    it('クラス名が複数ある場合の変更');
 });
