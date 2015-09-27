@@ -38,4 +38,8 @@ describe('Viewみたいなやつ', function(){
             done();
         }, 0);
     });
+
+    it('repeatの実装');
+    it('配列の表示');
+    it('オブジェクトの表示');
 });
