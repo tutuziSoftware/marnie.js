@@ -274,11 +274,15 @@
                     var element = document[methodName](key);
 
                     if(element && 'innerText' in element){
+                        //getElementById
                         element.innerText = data[key];
                         break;
-                    }else if(element){
-                        //手抜きだ
-                        element[0].innerText = data[key];
+                    }else if(element && 'length' in element){
+                        //getElementsByClassName
+                        for(var i = 0 ; i != element.length ; i++){
+                            element[i].innerText = data[key];
+                        }
+
                         break;
                     }
                 }
