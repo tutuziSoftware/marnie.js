@@ -254,7 +254,7 @@
 
             Object.observe(data, function(changes){
                 changes.forEach(function(change){
-                    hypo.reload();
+                    _reload(data, change.name);
                 });
             });
 
@@ -262,8 +262,12 @@
 
             hypo.reload = function(){
                 Object.keys(data).forEach(function(key){
-                    document.getElementById(key).innerText = data[key];
+                    _reload(data, key);
                 });
+            };
+
+            var _reload = function(data, key){
+                document.getElementById(key).innerText = data[key];
             };
 
             return hypo;
