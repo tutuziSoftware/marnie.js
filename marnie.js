@@ -285,8 +285,19 @@
                             return this.element && 'length' in this.element;
                         },
                         reload:function(){
-                            for(var i = 0 ; i != this.element.length ; i++){
-                                this.element[i].innerText = data[key];
+                            var length = this.element.length;
+
+                            for(var i = 0 ; i != length ; i++){
+                                if(Array.isArray(data[key]) == false){
+                                    this.element[i].innerText = data[key];
+                                }else{
+                                    data[key].forEach(function(d){
+                                        var clone = this.element[i].cloneNode(true);
+                                        this.element[i].parentNode.insertBefore(clone, this.element[i]);
+                                    }, this);
+
+                                    this.element[i].parentNode.removeChild(this.element[i]);
+                                }
                             }
                         }
                     }
