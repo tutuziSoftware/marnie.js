@@ -39,7 +39,14 @@ describe('Viewみたいなやつ', function(){
         }, 0);
     });
 
-    it('repeatの実装');
+    it('repeatの実装', function(){
+        expect(document.getElementsByClassName('repeat').length).toBe(1);
+
+        data['repeat'] = [3, 2, 1, 'GO!'];
+
+        expect(document.getElementsByClassName('repeat').length).toBe(4);
+    });
+
     it('配列の表示');
     it('オブジェクトの表示');
 });
