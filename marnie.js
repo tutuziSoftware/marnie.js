@@ -14,6 +14,24 @@
     return marnie;
 })(), [
     function(marnie){
+        marnie.comics = {
+            isObject:function(comic){
+                return comic && typeof comic === 'object';
+            },
+            isObjectLike:function(comic){
+                return marnie.comics.isObject(comic) || marnie.comics.isFunction(comic);
+            },
+            isFunction:function(comic){
+                return comic && typeof comic === 'function';
+            },
+            isNumber:function(comic){
+                return typeof comic === 'number' && isNaN(comic) == false;
+            },
+            //乱暴なやり方だ
+            isArray:Array.isArray
+        };
+    },
+    function(marnie){
         /**
          * とある範囲を指定します。
          * このクラスはイミュータブルです。
@@ -282,7 +300,7 @@
                     {
                         element:document.getElementsByClassName(key),
                         is:function(){
-                            return this.element && 'length' in this.element;
+                            return this.element && marnie.comics.isNumber(this.element.length) && this.element.length >= 1;
                         },
                         reload:function(){
                             var length = this.element.length;
@@ -296,6 +314,30 @@
 
                                     this.element[i].parentNode.removeChild(this.element[i]);
                                 }else{
+                                    this.element[i].innerText = data[key];
+                                }
+                            }
+                        }
+                    },
+                    //オブジェクトで更新する時
+                    {
+                        element:document.querySelectorAll('[class^='+key+']'),
+                        is:function(){
+                            return this.element && 'length' in this.element;
+                        },
+                        reload:function(){
+                            var length = this.element.length;
+
+                            for(var i = 0 ; i != length ; i++){
+                                if(marnie.comics.isObject(data[key])){
+                                    for(var k in data[key]){
+                                        var views = document.querySelectorAll('[class^="'+key+'.'+k+'"]');
+
+                                        for(var j = 0 ; j != views.length ; j++){
+                                            views[j].innerText = data[key][k];
+                                        }
+                                    }
+                                }else if(marnie.comics.isArray(data[key])){
                                     this.element[i].innerText = data[key];
                                 }
                             }

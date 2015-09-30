@@ -60,9 +60,11 @@ describe('Viewみたいなやつ', function(){
         };
 
         setTimeout(function(){
-            expect(document.getElementsByClassName('view-object.a')[0].innerText).toBe(5);
-            expect(document.getElementsByClassName('view-object.b')[0].innerText).toBe(10);
+            expect(document.getElementsByClassName('view-object.a')[0].innerText).toBe('5');
+            expect(document.getElementsByClassName('view-object.b')[0].innerText).toBe('10');
             done();
         }, 0);
     });
+
+    it('ディープなオブジェクト走査');
 });
