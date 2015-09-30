@@ -50,6 +50,19 @@ describe('Viewみたいなやつ', function(){
         }, 0);
     });
 
-    it('配列の表示');
-    it('オブジェクトの表示');
+    it('オブジェクトの表示', function(done){
+        expect(document.getElementsByClassName('view-object.a')[0].innerText).toBe('');
+        expect(document.getElementsByClassName('view-object.b')[0].innerText).toBe('');
+
+        data['view-object'] = {
+            a:5,
+            b:10
+        };
+
+        setTimeout(function(){
+            expect(document.getElementsByClassName('view-object.a')[0].innerText).toBe(5);
+            expect(document.getElementsByClassName('view-object.b')[0].innerText).toBe(10);
+            done();
+        }, 0);
+    });
 });
