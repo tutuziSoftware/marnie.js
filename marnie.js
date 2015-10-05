@@ -27,8 +27,24 @@
             isNumber:function(comic){
                 return typeof comic === 'number' && isNaN(comic) == false;
             },
-            //乱暴なやり方だ
-            isArray:Array.isArray
+            isArray:Array.isArray,
+            objectQuery:function(obj, query){
+                return new Promise(function(resolve, reject){
+                    var objectKeys = query.split('.');
+                    var data = obj;
+                    for(var j = 0 ; j != objectKeys.length ; j++){
+                        var objectKey = objectKeys[j];
+
+                        if(marnie.comics.isObject(data) && objectKey in data){
+                            data = data[objectKey];
+                        }else{
+                            reject();
+                        }
+                    }
+
+                    resolve(data);
+                });
+            }
         };
     },
     function(marnie){
@@ -331,20 +347,14 @@
 
                             for(var i = 0 ; i != length ; i++){
                                 if(marnie.comics.isObject(data[key])){
-                                    var objectKeys = views[i].className.split('.');
-
-                                    var text = data;
-                                    for(var j = 0 ; j != objectKeys.length ; j++){
-                                        var objectKey = objectKeys[j];
-
-                                        if(objectKey in text){
-                                            text = text[objectKey];
-                                        }else{
-                                            break;
-                                        }
-                                    }
-
-                                    if(j == objectKeys.length) views[i].innerText = text;
+                                    (function(){
+                                        var view = views[i];
+                                        marnie.comics.objectQuery(data, views[i].className).then(function(text){
+                                            view.innerText = text;
+                                        }).catch(function(){
+                                            //なにもしないよ
+                                        });
+                                    })();
                                 }else if(marnie.comics.isArray(data[key])){
                                     this.element[i].innerText = data[key];
                                 }
