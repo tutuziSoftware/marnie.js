@@ -66,5 +66,23 @@ describe('Viewみたいなやつ', function(){
         }, 0);
     });
 
-    it('ディープなオブジェクト走査');
+    it('ディープなオブジェクト走査', function(done){
+        expect(document.getElementsByClassName('view-object-deep.a.b.c')[0].innerText).toBe('');
+        expect(document.getElementsByClassName('view-object-deep.a.d')[0].innerText).toBe('');
+
+        data['view-object'] = {
+            a:{
+                b:{
+                    c:'聖戦士'
+                },
+                d:'ダンバイン'
+            }
+        };
+
+        setTimeout(function(){
+            expect(document.getElementsByClassName('view-object-deep.a.b.c')[0].innerText).toBe('聖戦士');
+            expect(document.getElementsByClassName('view-object-deep.a.d')[0].innerText).toBe('ダンバイン');
+            done();
+        }, 0);
+    });
 });
