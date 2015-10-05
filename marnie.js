@@ -326,17 +326,25 @@
                             return this.element && 'length' in this.element;
                         },
                         reload:function(){
+                            var views = this.element;
                             var length = this.element.length;
 
                             for(var i = 0 ; i != length ; i++){
                                 if(marnie.comics.isObject(data[key])){
-                                    for(var k in data[key]){
-                                        var views = document.querySelectorAll('[class^="'+key+'.'+k+'"]');
+                                    var objectKeys = views[i].className.split('.');
 
-                                        for(var j = 0 ; j != views.length ; j++){
-                                            views[j].innerText = data[key][k];
+                                    var text = data;
+                                    for(var j = 0 ; j != objectKeys.length ; j++){
+                                        var objectKey = objectKeys[j];
+
+                                        if(objectKey in text){
+                                            text = text[objectKey];
+                                        }else{
+                                            break;
                                         }
                                     }
+
+                                    if(j == objectKeys.length) views[i].innerText = text;
                                 }else if(marnie.comics.isArray(data[key])){
                                     this.element[i].innerText = data[key];
                                 }
