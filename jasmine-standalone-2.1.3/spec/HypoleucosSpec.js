@@ -70,7 +70,7 @@ describe('Viewみたいなやつ', function(){
         expect(document.getElementsByClassName('view-object-deep.a.b.c')[0].innerText).toBe('');
         expect(document.getElementsByClassName('view-object-deep.a.d')[0].innerText).toBe('');
 
-        data['view-object'] = {
+        data['view-object-deep'] = {
             a:{
                 b:{
                     c:'聖戦士'
