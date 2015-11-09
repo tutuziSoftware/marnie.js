@@ -375,5 +375,8 @@
 
             return hypo;
         };
-    }
+    },
+    function(marnie){
+        marnie.Priscilla = function(){};
+    },
 ]);
