@@ -4,21 +4,21 @@ describe('Priscilla', function(){
     });
 
     describe('ニューラルネットワーク', function(){
-        var p = new marnie.Priscilla;
+        var p = marnie.Priscilla();
 
         it('入力値設定', function(){
-            p.addInput({});
-            p.addInput({});
+            expect(typeof p.addInput).toBe("function");
+            p.addInput(2);
         });
 
         it('中間層設定', function(){
-            p.addInvisible({});
-            p.addInvisible({});
+            expect(typeof p.addInvisible).toBe("function");
+            p.addInvisible(2);
         });
 
         it('出力層設定', function(){
-            p.addOutput({});
-            p.addOutput({});
+            expect(typeof p.addOutput).toBe("function");
+            p.addOutput(2);
         });
 
         it('演算', function(){

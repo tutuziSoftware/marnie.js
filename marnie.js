@@ -44,6 +44,11 @@
 
                     resolve(data);
                 });
+            },
+            loop:function(number, callback){
+                for(var i = 0 ; i <= number ; i++){
+                    callback(i);
+                }
             }
         };
     },
@@ -377,6 +382,26 @@
         };
     },
     function(marnie){
-        marnie.Priscilla = function(){};
+        marnie.Priscilla = function(){
+            var pri = {};
+
+            var pri_inputs = [];
+            var pri_invisibles = [];
+            var pri_outputs = [];
+
+            pri.addInput = add.bind(this, pri_inputs);
+            pri.addInvisible = add.bind(this, pri_invisibles);
+            pri.addOutput = add.bind(this, pri_outputs);
+
+            function add(push, input){
+                if(typeof input === "number"){
+                    marnie.comics.loop(input, function(i){
+                        push.push({});
+                    });
+                }
+            };
+
+            return pri;
+        };
     },
 ]);
