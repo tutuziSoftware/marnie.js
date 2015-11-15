@@ -409,6 +409,12 @@
                 var sum = pri_inputs
                             .map(input => input.value * input.line)
                             .reduce((input, sum) => input + sum, 0);
+
+                //TODO 中間層への伝播
+                //TODO sum - 閾値(pri_invisibleで定義)
+                //TODO f(sum - 閾値)
+
+                //TODO 出力層への伝播(中間層とやることは同じ)
             };
 
             function add(push, input){
