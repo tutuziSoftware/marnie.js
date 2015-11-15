@@ -393,15 +393,42 @@
             pri.addInvisible = add.bind(this, pri_invisibles);
             pri.addOutput = add.bind(this, pri_outputs);
 
+            /**
+             * 入力層に値を入力します
+             * @param index
+             * @param input
+             */
+            pri.setInput = (index, input) => {
+                pri_inputs[index].value = input;
+            };
+
+            /**
+             * 出力を開始します。
+             */
+            pri.start = () => {
+                var sum = pri_inputs
+                            .map(input => input.value * input.line)
+                            .reduce((input, sum) => input + sum, 0);
+            };
+
             function add(push, input){
                 if(typeof input === "number"){
                     marnie.comics.loop(input, function(i){
-                        push.push({});
+                        push.push(newUnit());
                     });
                 }
             };
 
             return pri;
         };
+
+        function newUnit(settings){
+            return {
+                //ユニットの持つ値
+                value: 0,
+                //前方に伸びる線
+                line: 1,
+            };
+        }
     },
 ]);

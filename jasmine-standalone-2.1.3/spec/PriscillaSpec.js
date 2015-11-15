@@ -22,7 +22,9 @@ describe('Priscilla', function(){
         });
 
         it('演算', function(){
-
+            p.setInput(0, 1);
+            p.setInput(1, 2);
+            p.start();
         });
     });
 });
