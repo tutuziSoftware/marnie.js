@@ -389,7 +389,11 @@
             var pri_invisibles = [];
             var pri_outputs = [];
 
-            pri.addInput = add.bind(this, pri_inputs);
+            pri.addInput = (unit_count) => {
+                add(pri_inputs, unit_count, {
+                    h:0
+                });
+            };
             pri.addInvisible = add.bind(this, pri_invisibles);
             pri.addOutput = add.bind(this, pri_outputs);
 
@@ -410,17 +414,21 @@
                             .map(input => input.value * input.line)
                             .reduce((input, sum) => input + sum, 0);
 
-                //TODO 中間層への伝播
-                //TODO sum - 閾値(pri_invisibleで定義)
-                //TODO f(sum - 閾値)
+                //中間層への伝播。こんな感じでいいのか……？
+                pri_invisibles
+                    .map((invisible) => sum - invisible.h)
+                    .map((invisible) => 1 / (1 + Math.exp(0 - invisible)))
+                    .forEach((invisible, index) => {
+                        pri_invisibles[index].value = invisible;
+                    });
 
                 //TODO 出力層への伝播(中間層とやることは同じ)
             };
 
-            function add(push, input){
+            function add(push, input, settings){
                 if(typeof input === "number"){
                     marnie.comics.loop(input, function(i){
-                        push.push(newUnit());
+                        push.push(newUnit(settings));
                     });
                 }
             };
@@ -429,12 +437,20 @@
         };
 
         function newUnit(settings){
-            return {
+            var unit = {
                 //ユニットの持つ値
                 value: 0,
                 //前方に伸びる線
                 line: 1,
+                //閾値
+                h:1
             };
+
+            if(settings !== void 0){
+                if("h" in settings) unit.h = settings.h;
+            }
+
+            return unit;
         }
     },
 ]);
