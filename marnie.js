@@ -410,19 +410,21 @@
              * 出力を開始します。
              */
             pri.start = () => {
+                //nΣi=1 xi wi
                 var sum = pri_inputs
                             .map(input => input.value * input.line)
                             .reduce((input, sum) => input + sum, 0);
 
                 //中間層への伝播。こんな感じでいいのか……？
-                pri_invisibles
-                    .map((invisible) => sum - invisible.h)
-                    .map((invisible) => 1 / (1 + Math.exp(0 - invisible)))
-                    .forEach((invisible, index) => {
-                        pri_invisibles[index].value = invisible;
-                    });
+                f(pri_invisibles, sum);
 
-                //TODO 出力層への伝播(中間層とやることは同じ)
+                //出力層への伝播(中間層とやることは同じ)
+                f(pri_outputs, sum);
+            };
+
+            pri.output = () => {
+                //TODO シャローコピーを返すべき
+                return pri_outputs;
             };
 
             function add(push, input, settings){
@@ -432,6 +434,20 @@
                     });
                 }
             };
+
+            /**
+             * 入力時のニューロン
+             * @param pri
+             */
+            function f(pri, sum){
+                pri
+                    .map(invisible => sum - invisible.h)
+                    //f
+                    .map(invisible => 1 / (1 + Math.exp(0 - invisible)))
+                    .forEach((invisible, index) => {
+                        pri_invisibles[index].value = invisible;
+                    });
+            }
 
             return pri;
         };

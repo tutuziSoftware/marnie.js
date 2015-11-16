@@ -25,6 +25,12 @@ describe('Priscilla', function(){
             p.setInput(0, 1);
             p.setInput(1, 2);
             p.start();
+
+            var output = p.output();
+
+            expect(Array.isArray(output)).toBeTruthy();
+            expect(output[0].value).toBe(0.8807970779778823);
+            expect(output[1].value).toBe(0.8807970779778823);
         });
     });
 });
