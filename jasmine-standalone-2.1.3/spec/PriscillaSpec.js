@@ -21,7 +21,7 @@ describe('Priscilla', function(){
             p.addOutput(2);
         });
 
-        it('演算', function(){
+        it('入力', function(){
             p.setInput(0, 1);
             p.setInput(1, 2);
             p.start();
@@ -31,6 +31,10 @@ describe('Priscilla', function(){
             expect(Array.isArray(output)).toBeTruthy();
             expect(output[0].value).toBe(0.8807970779778823);
             expect(output[1].value).toBe(0.8807970779778823);
+        });
+
+        it('教師あり学習', function(){
+            p.learning(1);
         });
     });
 });

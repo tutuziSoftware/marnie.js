@@ -427,6 +427,15 @@
                 return pri_outputs;
             };
 
+            /**
+             * 教師あり学習を行います。
+             */
+            pri.learning = (kyosi) => {
+                var learnings = pri_outputs.map(output => {
+                    return (kyosi - output.value) * output.value * (1 - output.value);
+                });
+            };
+
             function add(push, input, settings){
                 if(typeof input === "number"){
                     marnie.comics.loop(input, function(i){
@@ -442,13 +451,23 @@
             function f(pri, sum){
                 pri
                     .map(invisible => sum - invisible.h)
-                    //シグモイド関数
-                    .map(invisible => 1 / (1 + Math.exp(0 - invisible)))
-                    //前のユニット群からの値を自分のユニットに格納
+                    .map(sigmoid)
                     .forEach((invisible, index) => {
                         pri[index].value = invisible;
                     });
             }
+
+            /**
+             * シグモイド関数。ユニットの出力を返す関数。
+             * 出力 = シグモイド関数(総和 - 閾値)
+             * @param x 前のユニットの出力値の総和 - 閾値
+             * @returns {number}
+             */
+            function sigmoid(x){
+                var a = 0;
+                return 1 / (1 + Math.exp(a - x));
+            }
+
 
             return pri;
         };
