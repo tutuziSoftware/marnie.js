@@ -442,10 +442,11 @@
             function f(pri, sum){
                 pri
                     .map(invisible => sum - invisible.h)
-                    //f
+                    //シグモイド関数
                     .map(invisible => 1 / (1 + Math.exp(0 - invisible)))
+                    //前のユニット群からの値を自分のユニットに格納
                     .forEach((invisible, index) => {
-                        pri_invisibles[index].value = invisible;
+                        pri[index].value = invisible;
                     });
             }
 
