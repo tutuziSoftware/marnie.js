@@ -450,8 +450,11 @@
              */
             function f(pri, sum){
                 pri
+                    //前のユニットから受け取った総和 - 閾値
                     .map(invisible => sum - invisible.h)
+                    //出力値決定
                     .map(sigmoid)
+                    //出力した値を保持
                     .forEach((invisible, index) => {
                         pri[index].value = invisible;
                     });
