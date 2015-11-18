@@ -3,38 +3,29 @@ describe('Priscilla', function(){
         expect(typeof marnie.Priscilla).toBe("function");
     });
 
-    describe('ニューラルネットワーク', function(){
-        var p = marnie.Priscilla();
+    describe('ユニットの表現', function(){
+        var unit;
 
-        it('入力値設定', function(){
-            expect(typeof p.addInput).toBe("function");
-            p.addInput(2);
+        it('生成', function(){
+            unit = new marnie.Priscilla.Unit({
+                w : [1],
+                h : 1
+            });
+
+            expect(typeof unit).toBe("object");
         });
 
-        it('中間層設定', function(){
-            expect(typeof p.addInvisible).toBe("function");
-            p.addInvisible(2);
+        it('結合荷重の確認', () => {
+            expect(unit.w.length).toBe(1);
+            expect(unit.w[0]).toBe(1);
         });
 
-        it('出力層設定', function(){
-            expect(typeof p.addOutput).toBe("function");
-            p.addOutput(2);
+        it('閾値の確認', () => {
+            expect(unit.h).toBe(1);
         });
 
-        it('入力', function(){
-            p.setInput(0, 1);
-            p.setInput(1, 2);
-            p.start();
-
-            var output = p.output();
-
-            expect(Array.isArray(output)).toBeTruthy();
-            expect(output[0].value).toBe(0.8807970779778823);
-            expect(output[1].value).toBe(0.8807970779778823);
-        });
-
-        it('教師あり学習', function(){
-            p.learning(1);
+        it('シグモイド関数を通過', () => {
+            expect(unit.f([1])).toBe(0.5);
         });
     });
 });

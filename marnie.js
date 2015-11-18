@@ -383,113 +383,46 @@
     },
     function(marnie){
         marnie.Priscilla = function(){
-            var pri = {};
-
-            var pri_inputs = [];
-            var pri_invisibles = [];
-            var pri_outputs = [];
-
-            pri.addInput = (unit_count) => {
-                add(pri_inputs, unit_count, {
-                    h:0
-                });
-            };
-            pri.addInvisible = add.bind(this, pri_invisibles);
-            pri.addOutput = add.bind(this, pri_outputs);
-
-            /**
-             * 入力層に値を入力します
-             * @param index
-             * @param input
-             */
-            pri.setInput = (index, input) => {
-                pri_inputs[index].value = input;
-            };
-
-            /**
-             * 出力を開始します。
-             */
-            pri.start = () => {
-                //nΣi=1 xi wi
-                var sum = pri_inputs
-                            .map(input => input.value * input.line)
-                            .reduce((input, sum) => input + sum, 0);
-
-                //中間層への伝播。こんな感じでいいのか……？
-                f(pri_invisibles, sum);
-
-                //出力層への伝播(中間層とやることは同じ)
-                f(pri_outputs, sum);
-            };
-
-            pri.output = () => {
-                //TODO シャローコピーを返すべき
-                return pri_outputs;
-            };
-
-            /**
-             * 教師あり学習を行います。
-             */
-            pri.learning = (kyosi) => {
-                var learnings = pri_outputs.map(output => {
-                    return (kyosi - output.value) * output.value * (1 - output.value);
-                });
-            };
-
-            function add(push, input, settings){
-                if(typeof input === "number"){
-                    marnie.comics.loop(input, function(i){
-                        push.push(newUnit(settings));
-                    });
-                }
-            };
-
-            /**
-             * 入力時のニューロン
-             * @param pri
-             */
-            function f(pri, sum){
-                pri
-                    //前のユニットから受け取った総和 - 閾値
-                    .map(invisible => sum - invisible.h)
-                    //出力値決定
-                    .map(sigmoid)
-                    //出力した値を保持
-                    .forEach((invisible, index) => {
-                        pri[index].value = invisible;
-                    });
-            }
-
-            /**
-             * シグモイド関数。ユニットの出力を返す関数。
-             * 出力 = シグモイド関数(総和 - 閾値)
-             * @param x 前のユニットの出力値の総和 - 閾値
-             * @returns {number}
-             */
-            function sigmoid(x){
-                var a = 0;
-                return 1 / (1 + Math.exp(a - x));
-            }
-
-
-            return pri;
+            //おそらくなにもかもが、間違っていたと思われる。
         };
 
-        function newUnit(settings){
-            var unit = {
-                //ユニットの持つ値
-                value: 0,
-                //前方に伸びる線
-                line: 1,
-                //閾値
-                h:1
-            };
+        /**
+         * 一つのユニットを表現します。
+         * @param settings
+         * @constructor
+         */
+        marnie.Priscilla.Unit = function(settings){
+            this.output = 0;
+            //結合荷重
+            this.w = settings !== void 0 && "w" in settings ? settings.w : [];
+            //閾値
+            this.h = settings !== void 0 && "h" in settings ? settings.h : 1;
+        };
+        /**
+         * 出力値
+         * @param inputs
+         * @returns {number}
+         */
+        marnie.Priscilla.Unit.prototype.f = function(inputs){
+            if(Array.isArray(inputs) === false) return;
+            if(this.w.length != inputs.length) return;
 
-            if(settings !== void 0){
-                if("h" in settings) unit.h = settings.h;
-            }
+            //Σwx
+            var sum = this.w
+                        .map( (w, index) => w * inputs[index] )
+                        .reduce( (sum, input) => sum + input , 0 );
 
-            return unit;
-        }
+            return this.pri_sigmoid(sum - this.h);
+        };
+        /**
+         * シグモイド関数。ユニットの出力を返す関数。
+         * 出力 = シグモイド関数(総和 - 閾値)
+         * @param x 前のユニットの出力値の総和 - 閾値
+         * @returns {number}
+         */
+        marnie.Priscilla.Unit.prototype.pri_sigmoid = function(x){
+            var a = 0;
+            return 1 / (1 + Math.exp(a - x));
+        };
     },
 ]);
